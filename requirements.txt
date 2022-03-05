@@ -1,0 +1,21 @@
+# Django Modules
+django
+django-cors-headers
+django-debug-toolbar
+django-environ
+django-model-utils
+
+# Django Rest Modules
+djangorestframework
+dj-rest-auth
+
+# Other Modules
+coreapi
+cryptography
+gunicorn
+mysqlclient
+requests
+passlib
+pyopenssl
+pytz
+validators
