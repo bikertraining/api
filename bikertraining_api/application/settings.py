@@ -74,8 +74,7 @@ INSTALLED_APPS.extend([
     'client.schedule',
     'database.default',
     'merchant',
-    'utils',
-    'test'
+    'utils'
 ])
 
 """

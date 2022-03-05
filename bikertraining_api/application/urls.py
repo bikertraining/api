@@ -30,7 +30,4 @@ if settings.DEBUG:
 
         # DRF Login
         path('api-auth/', include('rest_framework.urls')),
-
-        # Test
-        path('test/', include('test.urls')),
     ]
