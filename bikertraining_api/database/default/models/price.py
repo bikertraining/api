@@ -8,18 +8,18 @@ class Price(models.Model):
         ERC = 'erc', 'Experienced RiderCourse'
         THREEWBRC = '3wbrc', 'Three-Wheeled Basic RiderCourse'
 
-    class_type = models.CharField(
-        blank=False,
-        choices=ClassType.choices,
-        max_length=5,
-        null=False
-    )
-
     amount = models.DecimalField(
         blank=False,
         decimal_places=2,
         default=0.00,
         max_digits=10,
+        null=False
+    )
+
+    class_type = models.CharField(
+        blank=False,
+        choices=ClassType.choices,
+        max_length=5,
         null=False
     )
 
