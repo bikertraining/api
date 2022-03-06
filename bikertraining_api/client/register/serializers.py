@@ -52,7 +52,7 @@ class RegisterSerializer(serializers.Serializer):
 
     credit_card_month = serializers.RegexField(
         allow_null=False,
-        min_length=2,
+        min_length=1,
         max_length=2,
         regex='^[0-9]+$',
         required=True
@@ -149,7 +149,7 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_credit_card_cvv2 = validated_data['credit_card_cvv2']
 
-        validated_credit_card_month = validated_data['credit_card_month']
+        validated_credit_card_month = str(validated_data['credit_card_month']).rjust(2, '0')
 
         validated_credit_card_name = validated_data['credit_card_name']
 
