@@ -34,6 +34,14 @@ def format_date(date_from, date_to):
     :return: str
     """
 
+    start_day = datetime.strptime(str(date_from), "%d")
+
+    end_day = datetime.strptime(str(date_to), "%d")
+
+    start_month = datetime.strptime(str(date_from), "%m")
+
+    end_month = datetime.strptime(str(date_to), "%m")
+
     start_date = datetime.strptime(str(date_from), "%Y-%m-%d")
 
     end_date = datetime.strptime(str(date_to), "%Y-%m-%d")
@@ -42,6 +50,16 @@ def format_date(date_from, date_to):
         return '%s, %s' % (
             start_date.strftime('%B %d'),
             end_date.strftime('%Y')
+        )
+    elif str(start_month) > str(end_month):
+        return '%s - %s' % (
+            start_date.strftime('%B %d, %Y'),
+            end_date.strftime('%B %d, %Y')
+        )
+    elif str(start_day) > str(end_day):
+        return '%s - %s' % (
+            start_date.strftime('%B %d'),
+            end_date.strftime('%B %d, %Y')
         )
     else:
         return '%s - %s' % (
