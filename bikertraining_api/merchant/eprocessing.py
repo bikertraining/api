@@ -104,3 +104,32 @@ class Eprocessing(object):
             return 'https://www.eprocessingnetwork.com/cgi-bin/epn/secure/tdbe/transact.pl'
         else:
             return 'https://www.eprocessingnetwork.com/cgi-bin/epn/secure/tdbe/transact.pl'
+
+    def payment(self):
+        """
+        Payment
+
+        :return: dict
+        """
+
+        request = {
+            "ePNAccount": env('MERCHANT_LOGIN_ID'),
+            "RestrictKey": env('MERCHANT_TRANSACTION_KEY'),
+            "RequestType": "transaction",
+            "TranType": "Sale",
+            "Total": f"{self.data['amount']}",
+            "Address": self.data['address'],
+            "Zip": self.data['zipcode'],
+            "CardNo": self.data['credit_card_number'],
+            "ExpMonth": self.data['credit_card_month'],
+            "ExpYear": self.data['credit_card_year'][-2:],
+            "CVV2Type": "1",
+            "CVV2": self.data['credit_card_cvv2'],
+            "FirstName": self.data['first_name'],
+            "LastName": self.data['last_name'],
+            "Phone": self.data['phone'],
+            "Email": self.data['email'],
+            "Description": f"Student Payment for {self.data['first_name']} {self.data['last_name']}"
+        }
+
+        return self.get_response('post', request)

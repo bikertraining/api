@@ -70,6 +70,7 @@ INSTALLED_APPS.extend([
     'admin.price',
     'admin.schedule',
     'client.contact',
+    'client.payment',
     'client.register',
     'client.schedule',
     'database.default',
