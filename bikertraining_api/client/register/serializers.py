@@ -191,14 +191,20 @@ class RegisterSerializer(serializers.Serializer):
                 code='error'
             )
 
+        amount = validated_schedule.price.amount
+
+        class_type = validated_schedule.price.get_class_type_display()
+
+        day_type = validated_schedule.get_day_type_display()
+
         # Send email
         html_message = loader.render_to_string(
             'register.html',
             {
                 'address': validated_address,
-                'amount': validated_schedule.price.amount,
+                'amount': amount,
                 'city': validated_city,
-                'class_type': validated_schedule.price.get_class_type_display(),
+                'class_type': class_type,
                 'comment': validated_comment,
                 'credit_card_cvv2': validated_credit_card_cvv2,
                 'credit_card_month': validated_credit_card_month,
@@ -213,7 +219,7 @@ class RegisterSerializer(serializers.Serializer):
                 'last_name': validated_last_name,
                 'phone': validated_phone,
                 'schedule': filters.format_date(validated_schedule.date_from, validated_schedule.date_to),
-                'schedule_day': validated_schedule.get_day_type_display(),
+                'schedule_day': day_type,
                 'state': validated_state,
                 'xpl': filters.format_xpl(validated_xpl),
                 'zipcode': validated_zipcode
@@ -222,7 +228,7 @@ class RegisterSerializer(serializers.Serializer):
 
         # Email managers
         mail_managers(
-            subject=f"Course Registration for {validated_schedule.price.get_class_type_display()} - ${validated_schedule.price.amount}",
+            subject=f"Course Registration for {class_type} - ${amount}",
             html_message=html_message,
             message=None
         )

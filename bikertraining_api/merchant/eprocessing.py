@@ -25,6 +25,10 @@ class Eprocessing(object):
         :return: dict
         """
 
+        class_type = self.data['schedule'].price.get_class_type_display()
+
+        day_type = self.data['schedule'].get_day_type_display()
+
         formated_date = filters.format_date(self.data['schedule'].date_from, self.data['schedule'].date_to)
 
         request = {
@@ -46,7 +50,7 @@ class Eprocessing(object):
             "Email": self.data['email'],
             "City": self.data['city'],
             "State": self.data['state'],
-            "Description": f"{self.data['schedule'].price.get_class_type_display()} - {self.data['schedule'].get_day_type_display()} / {formated_date}"
+            "Description": f"{class_type} - {day_type} / {formated_date}"
         }
 
         return self.get_response('post', request)

@@ -26,6 +26,10 @@ class Authorize(object):
         :return: dict
         """
 
+        class_type = self.data['schedule'].price.get_class_type_display()
+
+        day_type = self.data['schedule'].get_day_type_display()
+
         formated_date = filters.format_date(self.data['schedule'].date_from, self.data['schedule'].date_to)
 
         request = {
@@ -47,8 +51,8 @@ class Authorize(object):
                     "lineItems": {
                         "lineItem": {
                             "itemId": self.data['schedule'].pk,
-                            "name": self.data['schedule'].price.get_class_type_display(),
-                            "description": f"{self.data['schedule'].get_day_type_display()} / {formated_date}",
+                            "name": class_type,
+                            "description": f"{day_type} / {formated_date}",
                             "quantity": "1",
                             "unitPrice": self.data['schedule'].price.amount
                         }
@@ -85,11 +89,11 @@ class Authorize(object):
                         "userField": [
                             {
                                 "name": "Class",
-                                "value": self.data['schedule'].price.get_class_type_display()
+                                "value": class_type
                             },
                             {
                                 "name": "Schedule",
-                                "value": f"{self.data['schedule'].get_day_type_display()} / {formated_date}"
+                                "value": f"{day_type} / {formated_date}"
                             },
                             {
                                 "name": "Total",
