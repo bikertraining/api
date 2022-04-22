@@ -1,5 +1,5 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny
 
 from client.schedule import models
 from client.schedule import serializers
@@ -11,7 +11,7 @@ class Search(generics.ListAPIView):
     """
 
     permission_classes = (
-        IsAuthenticatedOrReadOnly,
+        AllowAny,
     )
 
     queryset = models.Schedule.objects.all()
