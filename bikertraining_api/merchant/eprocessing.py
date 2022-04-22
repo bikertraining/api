@@ -31,9 +31,18 @@ class Eprocessing(object):
 
         formated_date = filters.format_date(self.data['schedule'].date_from, self.data['schedule'].date_to)
 
+        if env('MERCHANT_TEST_MODE'):
+            merchant_login_id = env('MERCHANT_LOGIN_ID_TEST')
+
+            merchant_transaction_key = env('MERCHANT_TRANSACTION_KEY_TEST')
+        else:
+            merchant_login_id = env('MERCHANT_LOGIN_ID_LIVE')
+
+            merchant_transaction_key = env('MERCHANT_TRANSACTION_KEY_LIVE')
+
         request = {
-            "ePNAccount": env('MERCHANT_LOGIN_ID'),
-            "RestrictKey": env('MERCHANT_TRANSACTION_KEY'),
+            "ePNAccount": merchant_login_id,
+            "RestrictKey": merchant_transaction_key,
             "RequestType": "transaction",
             "TranType": "Sale",
             "Total": f"{self.data['schedule'].price.amount}",
@@ -116,9 +125,18 @@ class Eprocessing(object):
         :return: dict
         """
 
+        if env('MERCHANT_TEST_MODE'):
+            merchant_login_id = env('MERCHANT_LOGIN_ID_TEST')
+
+            merchant_transaction_key = env('MERCHANT_TRANSACTION_KEY_TEST')
+        else:
+            merchant_login_id = env('MERCHANT_LOGIN_ID_LIVE')
+
+            merchant_transaction_key = env('MERCHANT_TRANSACTION_KEY_LIVE')
+
         request = {
-            "ePNAccount": env('MERCHANT_LOGIN_ID'),
-            "RestrictKey": env('MERCHANT_TRANSACTION_KEY'),
+            "ePNAccount": merchant_login_id,
+            "RestrictKey": merchant_transaction_key,
             "RequestType": "transaction",
             "TranType": "Sale",
             "Total": f"{self.data['amount']}",
@@ -133,6 +151,8 @@ class Eprocessing(object):
             "LastName": self.data['last_name'],
             "Phone": self.data['phone'],
             "Email": self.data['email'],
+            "City": self.data['city'],
+            "State": self.data['state'],
             "Description": f"Student Payment for {self.data['first_name']} {self.data['last_name']}"
         }
 

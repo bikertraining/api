@@ -11,6 +11,10 @@ class PaymentSerializer(serializers.Serializer):
         required=True
     )
 
+    city = serializers.CharField(
+        required=True
+    )
+
     credit_card_cvv2 = serializers.RegexField(
         allow_null=False,
         min_length=3,
@@ -62,6 +66,13 @@ class PaymentSerializer(serializers.Serializer):
         required=True
     )
 
+    state = serializers.RegexField(
+        allow_null=False,
+        max_length=3,
+        regex='^[a-zA-Z]+$',
+        required=True
+    )
+
     zipcode = serializers.CharField(
         allow_null=False,
         max_length=28,
@@ -83,6 +94,8 @@ class PaymentSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         validated_address = validated_data['address']
+
+        validated_city = validated_data['city']
 
         validated_credit_card_cvv2 = validated_data['credit_card_cvv2']
 
@@ -106,6 +119,8 @@ class PaymentSerializer(serializers.Serializer):
             class_type='brc'
         )
 
+        validated_state = validated_data['state']
+
         validated_zipcode = validated_data['zipcode']
 
         validated_data['amount'] = validated_price.amount
@@ -127,6 +142,7 @@ class PaymentSerializer(serializers.Serializer):
             'payment.html',
             {
                 'address': validated_address,
+                'city': validated_city,
                 'amount': validated_price.amount,
                 'credit_card_cvv2': validated_credit_card_cvv2,
                 'credit_card_month': validated_credit_card_month,
@@ -137,6 +153,7 @@ class PaymentSerializer(serializers.Serializer):
                 'first_name': validated_first_name,
                 'last_name': validated_last_name,
                 'phone': validated_phone,
+                'state': validated_state,
                 'zipcode': validated_zipcode
             }
         )

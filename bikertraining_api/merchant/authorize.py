@@ -32,11 +32,20 @@ class Authorize(object):
 
         formated_date = filters.format_date(self.data['schedule'].date_from, self.data['schedule'].date_to)
 
+        if env('MERCHANT_TEST_MODE'):
+            merchant_login_id = env('MERCHANT_LOGIN_ID_TEST')
+
+            merchant_transaction_key = env('MERCHANT_TRANSACTION_KEY_TEST')
+        else:
+            merchant_login_id = env('MERCHANT_LOGIN_ID_LIVE')
+
+            merchant_transaction_key = env('MERCHANT_TRANSACTION_KEY_LIVE')
+
         request = {
             "createTransactionRequest": {
                 "merchantAuthentication": {
-                    "name": env('MERCHANT_LOGIN_ID'),
-                    "transactionKey": env('MERCHANT_TRANSACTION_KEY')
+                    "name": merchant_login_id,
+                    "transactionKey": merchant_transaction_key
                 },
                 "transactionRequest": {
                     "transactionType": 'authCaptureTransaction',
