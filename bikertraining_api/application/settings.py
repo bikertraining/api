@@ -1,5 +1,6 @@
 import os
 import sys
+from email.utils import parseaddr
 
 import environ
 
@@ -11,6 +12,7 @@ env = environ.Env(
     DATABASE_USER=(str, ''),
     EMAIL_ADMINS=(tuple, ()),
     EMAIL_DEFAULT_FROM=(str, ''),
+    EMAIL_DEFAULT_SERVER_FROM=(str, ''),
     EMAIL_HOST=(str, ''),
     EMAIL_HOST_PASSWORD=(str, ''),
     EMAIL_HOST_PORT=(int, 25),
@@ -133,13 +135,9 @@ Database
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'HOST': env('DATABASE_HOST'),
         'NAME': env('DATABASE_NAME'),
-        'OPTIONS': {
-            'autocommit': True,
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
         'PASSWORD': env('DATABASE_PASSWORD'),
         'PORT': env('DATABASE_PORT'),
         'USER': env('DATABASE_USER')
@@ -259,27 +257,14 @@ EMAIL_USE_TLS = env('EMAIL_HOST_USE_TLS')
 # From Email Address
 DEFAULT_FROM_EMAIL = env('EMAIL_DEFAULT_FROM')
 
-#
-# Set the administrator email address(es)
-#
-# Only used when important notications need to be sent
-# Example; Queue failed to process
-#
-# For more than 1 admin, recommended to use a mailing list address here
-ADMINS = [
-    env.tuple('EMAIL_ADMINS')
-]
+# From Server Email Address
+SERVER_EMAIL = env('EMAIL_DEFAULT_SERVER_FROM')
 
-#
+# Set the administrator email address(es)
+ADMINS = tuple(parseaddr(email) for email in env.list('EMAIL_ADMINS'))
+
 # Set the manager email address(es)
-#
-# Only used when DEBUG is False
-# Example; 404 Errors
-#
-# For more than 1 manager, recommended to use a mailing list address here
-MANAGERS = [
-    env.tuple('EMAIL_MANAGERS')
-]
+MANAGERS = tuple(parseaddr(email) for email in env.list('EMAIL_MANAGERS'))
 
 """
 COR Headers

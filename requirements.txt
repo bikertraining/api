@@ -13,9 +13,9 @@ dj-rest-auth
 coreapi
 cryptography
 gunicorn
-mysqlclient
 requests
 passlib
+psycopg2
 pyopenssl
 pytz
 validators
