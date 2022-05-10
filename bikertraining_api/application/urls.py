@@ -5,6 +5,7 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     # Admin URLs
+    path('admin/coach/', include('admin.coach.urls')),
     path('admin/price/', include('admin.price.urls')),
     path('admin/schedule/', include('admin.schedule.urls')),
 
