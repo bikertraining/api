@@ -22,3 +22,10 @@ class SearchSerializer(serializers.ModelSerializer):
         model = models.Coach
 
         fields = '__all__'
+
+
+class MsfExpirationSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        result = models.Coach.objects.all()
+
+        return result
