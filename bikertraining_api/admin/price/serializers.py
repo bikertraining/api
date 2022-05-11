@@ -7,7 +7,7 @@ from admin.price.models import models
 
 class BuildPriceSerializer(serializers.Serializer):
     def validate(self, attrs):
-        if not os.path.exists('/home/Diemuzi/api/bikertraining_api/application/.env'):
+        if not os.path.exists('/home/bikertraining/api.bikertraining.net/public/application/.env'):
             raise serializers.ValidationError(
                 '.env has not been installed.',
                 code='not_found'
