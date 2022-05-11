@@ -21,55 +21,60 @@ class Command(base.BaseCommand):
             current_year = date.today().strftime('%Y')
 
             for item in serializer.instance:
-                msf_month = item.date_to.strftime('%m')
-                msf_year = item.date_to.strftime('%Y')
+                # Make sure we have a valid MSF ID
+                if str(item.msf_id) > '0':
+                    msf_month = item.date_to.strftime('%m')
+                    msf_year = item.date_to.strftime('%Y')
 
-                months = int(msf_month) - int(current_month) + (12 * (int(msf_year) - int(current_year)))
+                    months = int(msf_month) - int(current_month) + (12 * (int(msf_year) - int(current_year)))
 
-                if months >= 6:
-                    self.stdout.write(f"Coach: {item.name} is current.")
-                elif 6 > months >= 0:
-                    # Send email
-                    html_message = loader.render_to_string(
-                        'coach/expiring.html',
-                        {
-                            'month': months,
-                            'name': item.name
-                        }
-                    )
+                    if months >= 6:
+                        self.stdout.write(f"Coach: {item.name} is current.")
+                    elif 6 > months >= 0:
+                        # Send email
+                        html_message = loader.render_to_string(
+                            'coach/expiring.html',
+                            {
+                                'date': item.date_to.strftime('%B %d, %Y'),
+                                'months': months,
+                                'name': item.name
+                            }
+                        )
 
-                    # Email coach
-                    send_mail(
-                        from_email='noreply@bikertraining.net',
-                        recipient_list=[
-                            item.email
-                        ],
-                        subject='MSF Certification Expiring Soon',
-                        html_message=html_message,
-                        message=None
-                    )
+                        # Email coach
+                        send_mail(
+                            from_email='noreply@bikertraining.net',
+                            recipient_list=[
+                                item.email
+                            ],
+                            subject='MSF Certification Expiring Soon',
+                            html_message=html_message,
+                            message=None
+                        )
 
-                    self.stdout.write(f"Coach: {item.name} is going to expire soon.")
-                elif months <= 0:
-                    # Send email
-                    html_message = loader.render_to_string(
-                        'coach/expired.html',
-                        {
-                            'name': item.name
-                        }
-                    )
+                        self.stdout.write(f"Coach: {item.name} is going to expire soon.")
+                    elif months <= 0:
+                        # Send email
+                        html_message = loader.render_to_string(
+                            'coach/expired.html',
+                            {
+                                'name': item.name
+                            }
+                        )
 
-                    # Email coach
-                    send_mail(
-                        from_email='noreply@bikertraining.net',
-                        recipient_list=[
-                            item.email
-                        ],
-                        subject='MSF Certification has Expired',
-                        html_message=html_message,
-                        message=None
-                    )
+                        # Email coach
+                        send_mail(
+                            from_email='noreply@bikertraining.net',
+                            recipient_list=[
+                                item.email
+                            ],
+                            subject='MSF Certification has Expired',
+                            html_message=html_message,
+                            message=None
+                        )
 
-                    self.stdout.write(f"Coach: {item.name} has expired.")
+                        self.stdout.write(f"Coach: {item.name} has expired.")
+                else:
+                    self.stdout.write(f"Coach: {item.name} has no MSF ID.")
         else:
             self.stdout.write(worker.error_to_human_readable(serializer.errors))
