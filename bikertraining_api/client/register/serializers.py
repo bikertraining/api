@@ -50,15 +50,19 @@ class RegisterSerializer(serializers.Serializer):
         required=True
     )
 
+    credit_card_first_name = serializers.CharField(
+        required=True
+    )
+
+    credit_card_last_name = serializers.CharField(
+        required=True
+    )
+
     credit_card_month = serializers.RegexField(
         allow_null=False,
         min_length=1,
         max_length=2,
         regex='^[0-9]+$',
-        required=True
-    )
-
-    credit_card_name = serializers.CharField(
         required=True
     )
 
@@ -147,15 +151,7 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_comment = validated_data['comment'] if validated_data.get('comment') is not None else ''
 
-        validated_credit_card_cvv2 = validated_data['credit_card_cvv2']
-
-        validated_credit_card_month = str(validated_data['credit_card_month']).rjust(2, '0')
-
-        validated_credit_card_name = validated_data['credit_card_name']
-
         validated_credit_card_number = validated_data['credit_card_number']
-
-        validated_credit_card_year = validated_data['credit_card_year']
 
         validated_dln = validated_data['dln']
 
@@ -206,11 +202,7 @@ class RegisterSerializer(serializers.Serializer):
                 'city': validated_city,
                 'class_type': class_type,
                 'comment': validated_comment,
-                'credit_card_cvv2': validated_credit_card_cvv2,
-                'credit_card_month': validated_credit_card_month,
-                'credit_card_name': validated_credit_card_name,
                 'credit_card_number': 'XXXX%s' % validated_credit_card_number[-4:],
-                'credit_card_year': validated_credit_card_year,
                 'dln': validated_dln,
                 'dls': validated_dls,
                 'dob': validated_dob,
