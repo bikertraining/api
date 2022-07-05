@@ -19,6 +19,8 @@ class BuildPriceSerializer(serializers.Serializer):
         class_types = [
             'brc',
             'erc',
+            'ime',
+            'private',
             '3wbrc'
         ]
 
@@ -28,7 +30,10 @@ class BuildPriceSerializer(serializers.Serializer):
             if not result.exists():
                 models.Price.objects.create(
                     amount=0.00,
-                    class_type=item
+                    class_type=item,
+                    is_active=True,
+                    process_amount=0.00,
+                    re_amount=0.00
                 )
 
         return validated_data
