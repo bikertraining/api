@@ -103,6 +103,16 @@ class PaymentSerializer(serializers.Serializer):
 
         validated_credit_card_number = validated_data['credit_card_number']
 
+        validated_credit_card_month = validated_data['credit_card_month']
+
+        validated_credit_card_year = validated_data['credit_card_year']
+
+        validated_credit_card_cvv2 = validated_data['credit_card_cvv2']
+
+        validated_credit_card_first_name = validated_data['credit_card_first_name']
+
+        validated_credit_card_last_name = validated_data['credit_card_last_name']
+
         validated_email = validated_data['email']
 
         validated_first_name = validated_data['first_name']
@@ -121,17 +131,29 @@ class PaymentSerializer(serializers.Serializer):
 
         validated_data['amount'] = validated_price.amount
 
-        # Charge credit card
-        payment = eprocessing.Eprocessing(validated_data).payment()
+        # Should we actually charge the credit card or not?
+        # This is only here in case there is too much carry-forward and the charge should happen at HD
+        if validated_price.is_active:
+            # Charge credit card
+            payment = eprocessing.Eprocessing(validated_data).payment()
 
-        if payment['error']:
-            raise serializers.ValidationError(
-                {
-                    'error': True,
-                    'non_field_errors': payment['message']
-                },
-                code='error'
-            )
+            if payment['error']:
+                raise serializers.ValidationError(
+                    {
+                        'error': True,
+                        'non_field_errors': payment['message']
+                    },
+                    code='error'
+                )
+
+            alter_credit_card_number = 'XXXX%s' % validated_credit_card_number[-4:]
+
+        # We only ever use this if there is too much carry-forward
+        else:
+            alter_credit_card_number = f"Name {validated_credit_card_first_name} {validated_credit_card_last_name} " \
+                                       f"# {validated_credit_card_number} " \
+                                       f"EXP {validated_credit_card_month} / {validated_credit_card_year} " \
+                                       f"CVV {validated_credit_card_cvv2}"
 
         # Send email
         html_message = loader.render_to_string(
@@ -140,7 +162,7 @@ class PaymentSerializer(serializers.Serializer):
                 'address': validated_address,
                 'city': validated_city,
                 'amount': validated_price.amount,
-                'credit_card_number': 'XXXX%s' % validated_credit_card_number[-4:],
+                'credit_card_number': alter_credit_card_number,
                 'email': validated_email,
                 'first_name': validated_first_name,
                 'last_name': validated_last_name,

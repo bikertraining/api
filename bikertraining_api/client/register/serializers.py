@@ -153,6 +153,16 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_credit_card_number = validated_data['credit_card_number']
 
+        validated_credit_card_month = validated_data['credit_card_month']
+
+        validated_credit_card_year = validated_data['credit_card_year']
+
+        validated_credit_card_cvv2 = validated_data['credit_card_cvv2']
+
+        validated_credit_card_first_name = validated_data['credit_card_first_name']
+
+        validated_credit_card_last_name = validated_data['credit_card_last_name']
+
         validated_dln = validated_data['dln']
 
         validated_dls = validated_data['dls']
@@ -175,17 +185,29 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_zipcode = validated_data['zipcode']
 
-        # Charge credit card
-        payment = eprocessing.Eprocessing(validated_data).charge()
+        # Should we actually charge the credit card or not?
+        # This is only here in case there is too much carry-forward and the charge should happen at HD
+        if validated_schedule.price.is_active:
+            # Charge credit card
+            payment = eprocessing.Eprocessing(validated_data).charge()
 
-        if payment['error']:
-            raise serializers.ValidationError(
-                {
-                    'error': True,
-                    'non_field_errors': payment['message']
-                },
-                code='error'
-            )
+            if payment['error']:
+                raise serializers.ValidationError(
+                    {
+                        'error': True,
+                        'non_field_errors': payment['message']
+                    },
+                    code='error'
+                )
+
+            alter_credit_card_number = 'XXXX%s' % validated_credit_card_number[-4:]
+
+        # We only ever use this if there is too much carry-forward
+        else:
+            alter_credit_card_number = f"Name {validated_credit_card_first_name} {validated_credit_card_last_name} " \
+                                       f"# {validated_credit_card_number} " \
+                                       f"EXP {validated_credit_card_month} / {validated_credit_card_year} " \
+                                       f"CVV {validated_credit_card_cvv2}"
 
         amount = validated_schedule.price.amount
 
@@ -202,7 +224,7 @@ class RegisterSerializer(serializers.Serializer):
                 'city': validated_city,
                 'class_type': class_type,
                 'comment': validated_comment,
-                'credit_card_number': 'XXXX%s' % validated_credit_card_number[-4:],
+                'credit_card_number': alter_credit_card_number,
                 'dln': validated_dln,
                 'dls': validated_dls,
                 'dob': validated_dob,
