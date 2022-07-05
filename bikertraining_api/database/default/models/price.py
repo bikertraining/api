@@ -23,6 +23,10 @@ class Price(models.Model):
         null=False
     )
 
+    is_active = models.BooleanField(
+        default=True
+    )
+
     tracker = FieldTracker()
 
     class Meta:
