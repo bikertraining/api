@@ -12,6 +12,7 @@ urlpatterns = [
     # Client URLs
     path('client/contact/', include('client.contact.urls')),
     path('client/payment/', include('client.payment.urls')),
+    path('client/price/', include('client.price.urls')),
     path('client/register/', include('client.register.urls')),
     path('client/schedule/', include('client.schedule.urls')),
 
