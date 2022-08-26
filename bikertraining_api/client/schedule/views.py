@@ -17,3 +17,18 @@ class Search(generics.ListAPIView):
     queryset = models.Schedule.objects.all()
 
     serializer_class = serializers.SearchSerializer
+
+
+class SearchByType(generics.ListAPIView):
+    """
+    Search schedules by class type
+    """
+
+    permission_classes = (
+        AllowAny,
+    )
+
+    serializer_class = serializers.SearchSerializer
+
+    def get_queryset(self):
+        return models.Schedule.objects.filter(price__class_type=self.kwargs['class_type'])

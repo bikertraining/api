@@ -7,5 +7,11 @@ urlpatterns = [
         'search',
         views.Search.as_view(),
         name='search'
+    ),
+
+    path(
+        'search/<str:class_type>',
+        views.SearchByType.as_view(),
+        name='search-by-type'
     )
 ]
