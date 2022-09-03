@@ -6,11 +6,13 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     # Admin URLs
     path('admin/coach/', include('admin.coach.urls')),
+    path('admin/ecourse/', include('admin.ecourse.urls')),
     path('admin/price/', include('admin.price.urls')),
     path('admin/schedule/', include('admin.schedule.urls')),
 
     # Client URLs
     path('client/contact/', include('client.contact.urls')),
+    path('client/ecourse/', include('client.ecourse.urls')),
     path('client/payment/', include('client.payment.urls')),
     path('client/price/', include('client.price.urls')),
     path('client/register/', include('client.register.urls')),
