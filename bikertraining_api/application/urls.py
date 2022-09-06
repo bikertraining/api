@@ -17,6 +17,7 @@ urlpatterns = [
     path('client/price/', include('client.price.urls')),
     path('client/register/', include('client.register.urls')),
     path('client/schedule/', include('client.schedule.urls')),
+    path('client/team/', include('client.team.urls')),
 
     # Rest API Login
     path('dj-rest-auth/', include('dj_rest_auth.urls')),

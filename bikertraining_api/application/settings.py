@@ -79,6 +79,7 @@ INSTALLED_APPS.extend([
     'client.price',
     'client.register',
     'client.schedule',
+    'client.team',
     'database.default',
     'merchant',
     'utils'
