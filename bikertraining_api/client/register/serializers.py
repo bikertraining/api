@@ -32,6 +32,10 @@ class RegisterSerializer(serializers.Serializer):
         required=True
     )
 
+    can_email = serializers.BooleanField(
+        required=False
+    )
+
     city = serializers.CharField(
         required=True
     )
@@ -147,6 +151,8 @@ class RegisterSerializer(serializers.Serializer):
     def create(self, validated_data):
         validated_address = validated_data['address']
 
+        validated_can_email = validated_data['can_email']
+
         validated_city = validated_data['city']
 
         validated_comment = validated_data['comment'] if validated_data.get('comment') is not None else ''
@@ -250,5 +256,12 @@ class RegisterSerializer(serializers.Serializer):
         # Subtract seat from schedule
         validated_schedule.seats = int(validated_schedule.seats) - 1
         validated_schedule.save(update_fields=['seats'])
+
+        # Subscribe to newsletter
+        if validated_can_email and not models.Contact.objects.filter(email=validated_email).exists():
+            models.Contact.objects.create(
+                email=validated_email,
+                name=f"{validated_first_name} {validated_last_name}"
+            )
 
         return validated_data

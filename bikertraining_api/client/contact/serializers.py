@@ -1,9 +1,14 @@
 from django.core.mail import mail_managers
 from django.template import loader
 from rest_framework import serializers
+from client.contact import models
 
 
 class SendEmailSerializer(serializers.Serializer):
+    can_email = serializers.BooleanField(
+        required=False
+    )
+
     email = serializers.CharField(
         required=True
     )
@@ -23,6 +28,8 @@ class SendEmailSerializer(serializers.Serializer):
     )
 
     def create(self, validated_data):
+        validated_can_email = validated_data['can_email']
+
         validated_email = validated_data['email']
 
         validated_message = validated_data['message']
@@ -41,10 +48,18 @@ class SendEmailSerializer(serializers.Serializer):
             }
         )
 
+        # Email managers
         mail_managers(
             subject='New submission from Contact Us',
             html_message=html_message,
             message=None
         )
+
+        # Subscribe to newsletter
+        if validated_can_email and not models.Contact.objects.filter(email=validated_email).exists():
+            models.Contact.objects.create(
+                email=validated_email,
+                name=validated_name
+            )
 
         return validated_data
