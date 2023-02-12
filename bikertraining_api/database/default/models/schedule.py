@@ -6,9 +6,10 @@ class Schedule(models.Model):
     class DayType(models.TextChoices):
         MONDAY_WEDNESDAY = 'monday_wednesday', 'Monday - Wednesday'
         THURSDAY_SUNDAY = 'thursday_sunday', 'Thursday & Saturday - Sunday'
-        FRIDAY_SUNDAY = 'friday_sunday', 'Friday - Sunday'
-        SUNDAY_MONDAY = 'sunday_monday', 'Sunday - Monday'
+        # FRIDAY_SUNDAY = 'friday_sunday', 'Friday - Sunday'
         MONDAY_TUESDAY = 'monday_tuesday', 'Monday - Tuesday'
+        SATURDAY_SUNDAY = 'saturday_sunday', 'Saturday - Sunday'
+        SUNDAY_MONDAY = 'sunday_monday', 'Sunday - Monday'
         SUNDAY = 'sunday', 'Sunday (Noon to 5:30 PM)'
 
     price = models.ForeignKey(
