@@ -3,7 +3,12 @@ from model_utils import FieldTracker
 
 
 class Ecourse(models.Model):
-    link_brc = models.URLField(
+    link_brc_e3 = models.URLField(
+        blank=False,
+        null=False
+    )
+
+    link_brc_e5 = models.URLField(
         blank=False,
         null=False
     )
