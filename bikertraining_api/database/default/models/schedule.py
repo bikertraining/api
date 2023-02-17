@@ -10,7 +10,7 @@ class Schedule(models.Model):
         MONDAY_TUESDAY = 'monday_tuesday', 'Monday - Tuesday'
         SATURDAY_SUNDAY = 'saturday_sunday', 'Saturday - Sunday'
         SUNDAY_MONDAY = 'sunday_monday', 'Sunday - Monday'
-        SUNDAY = 'sunday', 'Sunday (Noon to 5:30 PM)'
+        SUNDAY = 'sunday', 'Sunday'
 
     price = models.ForeignKey(
         'Price',
