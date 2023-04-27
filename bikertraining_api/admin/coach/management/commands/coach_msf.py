@@ -43,7 +43,7 @@ class Command(base.BaseCommand):
 
                         # Email coach
                         send_mail(
-                            from_email='noreply@bikertraining.net',
+                            from_email='noreply@bikertraining.com',
                             recipient_list=[
                                 item.email
                             ],
@@ -64,7 +64,7 @@ class Command(base.BaseCommand):
 
                         # Email coach
                         send_mail(
-                            from_email='noreply@bikertraining.net',
+                            from_email='noreply@bikertraining.com',
                             recipient_list=[
                                 item.email
                             ],
