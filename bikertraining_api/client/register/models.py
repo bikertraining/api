@@ -9,6 +9,14 @@ class Contact(models.Contact):
         verbose_name_plural = 'Contacts'
 
 
+class Coupon(models.Coupon):
+    class Meta:
+        proxy = True
+
+        verbose_name = 'Coupon'
+        verbose_name_plural = 'Coupons'
+
+
 class Price(models.Price):
     class Meta:
         proxy = True

@@ -15,6 +15,12 @@ class PaymentSerializer(serializers.Serializer):
         required=True
     )
 
+    coupon_code = serializers.CharField(
+        allow_blank=True,
+        allow_null=True,
+        required=False
+    )
+
     credit_card_cvv2 = serializers.RegexField(
         allow_null=False,
         min_length=3,
@@ -101,6 +107,8 @@ class PaymentSerializer(serializers.Serializer):
 
         validated_city = validated_data['city']
 
+        validated_coupon_code = validated_data['coupon_code'] if validated_data.get('coupon_code') is not None else ''
+
         validated_credit_card_number = validated_data['credit_card_number']
 
         validated_credit_card_month = validated_data['credit_card_month']
@@ -129,7 +137,21 @@ class PaymentSerializer(serializers.Serializer):
 
         validated_zipcode = validated_data['zipcode']
 
-        validated_data['amount'] = validated_price.amount
+        # validated_data['amount'] = validated_price.amount
+
+        # If a Coupon Code was used, subtract the cost
+        try:
+            coupon = models.Coupon.objects.get(
+                class_type='brc',
+                is_active=True,
+                name=validated_coupon_code
+            )
+
+            final_amount = validated_price.amount - coupon.amount
+        except models.Coupon.DoesNotExist:
+            final_amount = validated_price.amount
+
+        validated_data['amount'] = final_amount
 
         # Should we actually charge the credit card or not?
         # This is only here in case there is too much carry-forward and the charge should happen at HD
@@ -161,7 +183,8 @@ class PaymentSerializer(serializers.Serializer):
             {
                 'address': validated_address,
                 'city': validated_city,
-                'amount': validated_price.amount,
+                'amount': final_amount,
+                'coupon_code': validated_coupon_code,
                 'credit_card_number': alter_credit_card_number,
                 'email': validated_email,
                 'first_name': validated_first_name,
@@ -174,7 +197,7 @@ class PaymentSerializer(serializers.Serializer):
 
         # Email managers
         mail_managers(
-            subject=f"Payment for {validated_first_name} {validated_last_name} - ${validated_price.amount}",
+            subject=f"Payment for {validated_first_name} {validated_last_name} - ${final_amount}",
             html_message=html_message,
             message=None
         )

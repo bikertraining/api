@@ -45,7 +45,7 @@ class Eprocessing(object):
             "RestrictKey": merchant_transaction_key,
             "RequestType": "transaction",
             "TranType": "Sale",
-            "Total": f"{self.data['schedule'].price.amount}",
+            "Total": f"{self.data['amount']}",
             "Address": self.data['address'],
             "Zip": self.data['zipcode'],
             "CardNo": self.data['credit_card_number'],

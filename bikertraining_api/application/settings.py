@@ -70,10 +70,12 @@ INSTALLED_APPS = [
 # Project Applications
 INSTALLED_APPS.extend([
     'admin.coach',
+    'admin.coupon',
     'admin.ecourse',
     'admin.price',
     'admin.schedule',
     'client.contact',
+    'client.coupon',
     'client.ecourse',
     'client.payment',
     'client.price',

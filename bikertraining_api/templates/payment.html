@@ -60,7 +60,9 @@
     </tr>
 
     <tr style="background-color: #FFFFFF;">
-        <td style="text-align: left; padding: 8px;">{{ credit_card_number }}</td>
+        <td style="text-align: left; padding: 8px;">
+            {{ credit_card_number }} {% if coupon_code != '' %}with Coupon Code: {{ coupon_code }}{% endif %}
+        </td>
     </tr>
     </tbody>
 </table>

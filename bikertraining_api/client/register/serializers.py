@@ -40,7 +40,17 @@ class RegisterSerializer(serializers.Serializer):
         required=True
     )
 
+    class_type = serializers.CharField(
+        required=True
+    )
+
     comment = serializers.CharField(
+        allow_blank=True,
+        allow_null=True,
+        required=False
+    )
+
+    coupon_code = serializers.CharField(
         allow_blank=True,
         allow_null=True,
         required=False
@@ -155,7 +165,11 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_city = validated_data['city']
 
+        validated_class_type = validated_data['class_type']
+
         validated_comment = validated_data['comment'] if validated_data.get('comment') is not None else ''
+
+        validated_coupon_code = validated_data['coupon_code'] if validated_data.get('coupon_code') is not None else ''
 
         validated_credit_card_number = validated_data['credit_card_number']
 
@@ -191,6 +205,20 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_zipcode = validated_data['zipcode']
 
+        # If a Coupon Code was used, subtract the cost
+        try:
+            coupon = models.Coupon.objects.get(
+                class_type=validated_class_type,
+                is_active=True,
+                name=validated_coupon_code
+            )
+
+            final_amount = validated_schedule.price.amount - coupon.amount
+        except models.Coupon.DoesNotExist:
+            final_amount = validated_schedule.price.amount
+
+        validated_data['amount'] = final_amount
+
         # Should we actually charge the credit card or not?
         # This is only here in case there is too much carry-forward and the charge should happen at HD
         if validated_schedule.price.is_active:
@@ -215,8 +243,6 @@ class RegisterSerializer(serializers.Serializer):
                                        f"EXP {validated_credit_card_month} / {validated_credit_card_year} " \
                                        f"CVV {validated_credit_card_cvv2}"
 
-        amount = validated_schedule.price.amount
-
         class_type = validated_schedule.price.get_class_type_display()
 
         day_type = validated_schedule.get_day_type_display()
@@ -226,10 +252,11 @@ class RegisterSerializer(serializers.Serializer):
             'register.html',
             {
                 'address': validated_address,
-                'amount': amount,
+                'amount': validated_data['amount'],
                 'city': validated_city,
                 'class_type': class_type,
                 'comment': validated_comment,
+                'coupon_code': validated_coupon_code,
                 'credit_card_number': alter_credit_card_number,
                 'dln': validated_dln,
                 'dls': validated_dls,
@@ -248,7 +275,7 @@ class RegisterSerializer(serializers.Serializer):
 
         # Email managers
         mail_managers(
-            subject=f"Course Registration for {class_type} - ${amount}",
+            subject=f"Course Registration for {class_type} - ${validated_data['amount']}",
             html_message=html_message,
             message=None
         )
