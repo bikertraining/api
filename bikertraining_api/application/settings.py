@@ -5,6 +5,7 @@ from email.utils import parseaddr
 import environ
 
 env = environ.Env(
+    CSRF_TRUSTED_ORIGINS=(list, []),
     DATABASE_HOST=(str, ''),
     DATABASE_NAME=(str, ''),
     DATABASE_PASSWORD=(str, ''),
@@ -98,7 +99,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
@@ -282,7 +282,6 @@ CORS_EXPOSE_HEADERS = (
     'Access-Control-Allow-Origin: *',
 )
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_REPLACE_HTTPS_REFERER = True
 
 """
 Debug Toolbar
@@ -322,6 +321,7 @@ CSRF
 """
 
 CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS')
 
 """
 SSL
