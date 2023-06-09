@@ -24,6 +24,10 @@ class Coach(models.Model):
         null=False
     )
 
+    frtp_date_from = models.DateField(
+        auto_now_add=False
+    )
+
     msf_id = models.CharField(
         blank=True,
         max_length=20,
