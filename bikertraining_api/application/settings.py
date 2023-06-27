@@ -5,6 +5,7 @@ from email.utils import parseaddr
 import environ
 
 env = environ.Env(
+    CORS_ALLOWED_ORIGINS=(list, []),
     CSRF_TRUSTED_ORIGINS=(list, []),
     DATABASE_HOST=(str, ''),
     DATABASE_NAME=(str, ''),
@@ -277,11 +278,7 @@ MANAGERS = tuple(parseaddr(email) for email in env.list('EMAIL_MANAGERS'))
 COR Headers
 """
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_EXPOSE_HEADERS = (
-    'Access-Control-Allow-Origin: *',
-)
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS')
 
 """
 Debug Toolbar

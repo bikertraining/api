@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.conf.urls import include
 from django.urls import path
+from rest_framework.authtoken import models
+from rest_framework.authtoken import views
 from rest_framework.documentation import include_docs_urls
+from rest_framework.response import Response
 
 urlpatterns = [
     # Admin URLs
@@ -39,3 +42,26 @@ if settings.DEBUG:
         # DRF Login
         path('api-auth/', include('rest_framework.urls')),
     ]
+
+
+# Custom Auth Token response
+class CustomAuthToken(views.ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+
+        user = serializer.validated_data['user']
+
+        token, created = models.Token.objects.get_or_create(user=user)
+
+        return Response({
+            'token': {
+                'key': token.key
+            }
+        })
+
+
+urlpatterns += [
+    path('dj-rest-auth/api-token-auth/', CustomAuthToken.as_view())
+]
