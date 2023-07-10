@@ -1,7 +1,15 @@
 from django.core.mail import mail_managers
 from django.template import loader
 from rest_framework import serializers
+
 from client.contact import models
+
+
+class SearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Contact
+
+        fields = '__all__'
 
 
 class SendEmailSerializer(serializers.Serializer):

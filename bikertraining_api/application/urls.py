@@ -9,6 +9,7 @@ from rest_framework.response import Response
 urlpatterns = [
     # Admin URLs
     path('admin/coach/', include('admin.coach.urls')),
+    path('admin/contact/', include('admin.contact.urls')),
     path('admin/coupon/', include('admin.coupon.urls')),
     path('admin/ecourse/', include('admin.ecourse.urls')),
     path('admin/price/', include('admin.price.urls')),
