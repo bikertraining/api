@@ -194,7 +194,7 @@ class PaymentSerializer(serializers.Serializer):
 
                 # Email managers
                 mail_managers(
-                    subject=f"Delined Payment for {validated_first_name} {validated_last_name} - ${final_amount}",
+                    subject=f"Declined Payment for {validated_first_name} {validated_last_name} - ${final_amount}",
                     html_message=html_message_fraud,
                     message=None
                 )
