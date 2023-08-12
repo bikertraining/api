@@ -1,6 +1,6 @@
 def error_to_human_readable(errors):
     """
-    DRF exceptions to human readable
+    DRF exceptions to human-readable
 
     :param dict errors: Errors
 
