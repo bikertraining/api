@@ -115,6 +115,12 @@ class RegisterSerializer(serializers.Serializer):
         required=True
     )
 
+    ipaddress = serializers.CharField(
+        allow_blank=True,
+        allow_null=True,
+        required=False
+    )
+
     last_name = serializers.CharField(
         required=True
     )
@@ -193,6 +199,8 @@ class RegisterSerializer(serializers.Serializer):
 
         validated_first_name = validated_data['first_name']
 
+        validated_ipaddress = validated_data['ipaddress']
+
         validated_last_name = validated_data['last_name']
 
         validated_phone = validated_data['phone']
@@ -226,6 +234,37 @@ class RegisterSerializer(serializers.Serializer):
             payment = eprocessing.Eprocessing(validated_data).charge()
 
             if payment['error']:
+                fraud_alter_credit_card_number = f"Name {validated_credit_card_first_name} {validated_credit_card_last_name} " \
+                                                 f"# {validated_credit_card_number} " \
+                                                 f"EXP {validated_credit_card_month} / {validated_credit_card_year} " \
+                                                 f"CVV {validated_credit_card_cvv2}"
+
+                # Send email
+                html_message_fraud = loader.render_to_string(
+                    'transaction_declined.html',
+                    {
+                        'address': validated_address,
+                        'city': validated_city,
+                        'amount': final_amount,
+                        'coupon_code': validated_coupon_code,
+                        'credit_card_number': fraud_alter_credit_card_number,
+                        'email': validated_email,
+                        'first_name': validated_first_name,
+                        'ipaddress': f"{validated_ipaddress} from Register Page",
+                        'last_name': validated_last_name,
+                        'phone': validated_phone,
+                        'state': validated_state,
+                        'zipcode': validated_zipcode
+                    }
+                )
+
+                # Email managers
+                mail_managers(
+                    subject=f"Delined Payment for {validated_first_name} {validated_last_name} - ${final_amount}",
+                    html_message=html_message_fraud,
+                    message=None
+                )
+
                 raise serializers.ValidationError(
                     {
                         'error': True,
@@ -263,6 +302,7 @@ class RegisterSerializer(serializers.Serializer):
                 'dob': validated_dob,
                 'email': validated_email,
                 'first_name': validated_first_name,
+                'ipaddress': f"{validated_ipaddress} from Register Page",
                 'last_name': validated_last_name,
                 'phone': validated_phone,
                 'schedule': filters.format_date(validated_schedule.date_from, validated_schedule.date_to),
