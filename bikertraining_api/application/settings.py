@@ -85,6 +85,7 @@ INSTALLED_APPS.extend([
     'client.register',
     'client.schedule',
     'client.team',
+    'client.whatsmyip',
     'database.default',
     'merchant',
     'utils'
