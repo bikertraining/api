@@ -3,15 +3,19 @@ from database.default import models
 
 class Coupon(models.Coupon):
     class Meta:
+        default_permissions = ()
+
         proxy = True
 
-        verbose_name = 'Coupon'
-        verbose_name_plural = 'Coupons'
+        verbose_name = 'Client Coupon'
+        verbose_name_plural = 'Client Coupons'
 
 
 class Price(models.Price):
     class Meta:
+        default_permissions = ()
+
         proxy = True
 
-        verbose_name = 'Price'
-        verbose_name_plural = 'Prices'
+        verbose_name = 'Client Price'
+        verbose_name_plural = 'Client Prices'

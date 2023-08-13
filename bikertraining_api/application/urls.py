@@ -12,6 +12,7 @@ urlpatterns = [
     path('admin/contact/', include('admin.contact.urls')),
     path('admin/coupon/', include('admin.coupon.urls')),
     path('admin/ecourse/', include('admin.ecourse.urls')),
+    path('admin/fraud/', include('admin.fraud.urls')),
     path('admin/price/', include('admin.price.urls')),
     path('admin/schedule/', include('admin.schedule.urls')),
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path('client/contact/', include('client.contact.urls')),
     path('client/coupon/', include('client.coupon.urls')),
     path('client/ecourse/', include('client.ecourse.urls')),
+    path('client/fraud/', include('client.fraud.urls')),
     path('client/payment/', include('client.payment.urls')),
     path('client/price/', include('client.price.urls')),
     path('client/register/', include('client.register.urls')),

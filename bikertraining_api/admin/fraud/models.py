@@ -1,7 +1,7 @@
 from database.default import models
 
 
-class Coach(models.Coach):
+class FraudString(models.FraudString):
     class Meta:
         default_permissions = ()
 
@@ -11,5 +11,5 @@ class Coach(models.Coach):
 
         proxy = True
 
-        verbose_name = 'Admin Coach'
-        verbose_name_plural = 'Admin Coaches'
+        verbose_name = 'Admin Fraud String'
+        verbose_name_plural = 'Admin Fraud Strings'

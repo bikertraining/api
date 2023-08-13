@@ -3,19 +3,23 @@ from database.default import models
 
 class Price(models.Price):
     class Meta:
+        default_permissions = ()
+
         proxy = True
 
-        verbose_name = 'Price'
-        verbose_name_plural = 'Prices'
+        verbose_name = 'Admin Price'
+        verbose_name_plural = 'Admin Prices'
 
 
 class Schedule(models.Schedule):
     class Meta:
+        default_permissions = ()
+
         ordering = [
             'date_from'
         ]
 
         proxy = True
 
-        verbose_name = 'Schedule'
-        verbose_name_plural = 'Schedules'
+        verbose_name = 'Admin Schedule'
+        verbose_name_plural = 'Admin Schedules'
