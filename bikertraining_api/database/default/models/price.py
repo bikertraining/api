@@ -5,7 +5,7 @@ from model_utils import FieldTracker
 class Price(models.Model):
     class ClassType(models.TextChoices):
         BRC = 'brc', 'Basic RiderCourse'
-        ERC = 'erc', 'Experienced RiderCourse'
+        ERC = 'erc', 'Skilled RiderCourse'
         IME = 'ime', 'Kickstart'
         PRIVATE = 'private', 'Private'
         THREEWBRC = '3wbrc', 'Three-Wheeled Basic RiderCourse'

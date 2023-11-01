@@ -13,5 +13,11 @@ urlpatterns = [
         'search/<str:class_type>',
         views.SearchByType.as_view(),
         name='search-by-type'
+    ),
+
+    path(
+        '<int:id>',
+        views.SearchById.as_view(),
+        name='search-by-id'
     )
 ]
