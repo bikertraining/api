@@ -1,22 +1,22 @@
 # Django Modules
-django==4.2.4
-django-cors-headers==4.2.0
+django==4.2.6
+django-cors-headers==4.3.0
 django-debug-toolbar==4.2.0
-django-environ==0.10.0
-django-ipware==5.0.0
+django-environ==0.11.2
+django-ipware==5.0.2
 django-model-utils==4.3.1
 
 # Django Rest Modules
 djangorestframework==3.14.0
-dj-rest-auth==4.0.1
+dj-rest-auth==5.0.1
 
 # Other Modules
 coreapi==2.3.3
-cryptography==41.0.3
+cryptography==41.0.5
 gunicorn==21.2.0
 requests==2.31.0
 passlib==1.7.4
-psycopg2==2.9.7
-pyopenssl==23.2.0
-pytz==2023.3
-validators==0.21.2
+psycopg2==2.9.9
+pyopenssl==23.3.0
+pytz==2023.3post1
+validators==0.22.0
