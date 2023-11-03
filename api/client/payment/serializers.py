@@ -99,19 +99,6 @@ class PaymentSerializer(serializers.Serializer):
         required=True
     )
 
-    def validate(self, attrs):
-        try:
-            models.Price.objects.get(
-                class_type='brc'
-            )
-        except models.Price.DoesNotExist:
-            raise serializers.ValidationError(
-                'Price does not exist.',
-                code='not_found'
-            )
-
-        return attrs
-
     def create(self, validated_data):
         # Get price based on class_type
         try:
@@ -130,7 +117,7 @@ class PaymentSerializer(serializers.Serializer):
         # If a Coupon Code was used, subtract the cost
         try:
             coupon = models.Coupon.objects.get(
-                class_type='brc',
+                class_type=validated_data['class_type'],
                 is_active=True,
                 name=validated_data['coupon_code'] if validated_data.get('coupon_code') is not None else ''
             )
