@@ -1,5 +1,5 @@
 # Django Modules
-django~=4.2.7
+django
 django-cors-headers
 django-debug-toolbar
 django-ipware
