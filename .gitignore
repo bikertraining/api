@@ -144,4 +144,5 @@ cython_debug/
 .idea/
 
 # Custom
-api/application/settings.py
+db.sqlite3
+djangoProject/

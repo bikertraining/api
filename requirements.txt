@@ -1,21 +1,11 @@
 # Django Modules
 django
 django-cors-headers
-django-debug-toolbar
-django-ipware
-django-model-utils
 
 # Django Rest Modules
 djangorestframework
 dj-rest-auth
 
 # Other Modules
-coreapi
-cryptography
 gunicorn
 requests
-passlib
-psycopg2
-pyopenssl
-pytz
-validators
