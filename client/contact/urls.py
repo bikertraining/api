@@ -7,11 +7,5 @@ urlpatterns = [
         '',
         views.Index.as_view(),
         name='index'
-    ),
-
-    path(
-        '<str:email>/unsubscribe',
-        views.Delete.as_view(),
-        name='delete'
     )
 ]

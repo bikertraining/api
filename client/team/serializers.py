@@ -8,7 +8,31 @@ class SendEmailSerializer(serializers.Serializer):
         required=True
     )
 
-    message = serializers.CharField(
+    message1 = serializers.CharField(
+        required=True
+    )
+
+    message2 = serializers.CharField(
+        required=True
+    )
+
+    message3 = serializers.CharField(
+        required=True
+    )
+
+    message4 = serializers.CharField(
+        required=True
+    )
+
+    message5 = serializers.CharField(
+        required=True
+    )
+
+    message6 = serializers.CharField(
+        required=True
+    )
+
+    message7 = serializers.CharField(
         required=True
     )
 
@@ -17,20 +41,24 @@ class SendEmailSerializer(serializers.Serializer):
     )
 
     phone = serializers.CharField(
-        allow_blank=True,
-        allow_null=True,
-        required=False
+        required=True
     )
 
     def create(self, validated_data):
         # Compose HTML Message
         html_message = loader.render_to_string(
-            'contact.html',
+            'team.html',
             {
                 'email': validated_data['email'],
-                'message': validated_data['message'],
+                'message1': validated_data['message1'],
+                'message2': validated_data['message2'],
+                'message3': validated_data['message3'],
+                'message4': validated_data['message4'],
+                'message5': validated_data['message5'],
+                'message6': validated_data['message6'],
+                'message7': validated_data['message7'],
                 'name': validated_data['name'],
-                'phone': validated_data['phone'] if validated_data.get('phone') is not None else ''
+                'phone': validated_data['phone']
             }
         )
 

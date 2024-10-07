@@ -38,10 +38,6 @@ class RegisterSerializer(serializers.Serializer):
         required=True
     )
 
-    can_email = serializers.BooleanField(
-        required=False
-    )
-
     city = serializers.CharField(
         required=True
     )
@@ -276,11 +272,29 @@ class RegisterSerializer(serializers.Serializer):
         validated_data['schedule'].seats = int(validated_data['schedule'].seats) - 1
         validated_data['schedule'].save(update_fields=['seats'])
 
-        # Subscribe to newsletter
-        if validated_data['can_email'] and not models.Contact.objects.filter(email=validated_data['email']).exists():
-            models.Contact.objects.create(
-                email=validated_data['email'],
-                name=f"{validated_data['first_name']} {validated_data['last_name']}"
-            )
+        # Save Student Information - Will be removed once class is deleted
+        # This is only here in case an email was not received, and we are missing information
+        models.Register.objects.create(
+            address=validated_data['address'],
+            amount=validated_data['amount'],
+            city=validated_data['city'],
+            class_type=validated_data['schedule'].price.get_class_type_display(),
+            comment=validated_data['comment'] if validated_data.get('comment') is not None else '',
+            coupon_code=validated_data['coupon_code'] if validated_data.get('coupon_code') is not None else '',
+            credit_card_number=alter_credit_card_number,
+            dln=validated_data['dln'],
+            dls=validated_data['dls'],
+            dob=validated_data['dob'],
+            email=validated_data['email'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            phone=validated_data['phone'],
+            schedule_date=filters.format_date(validated_data['schedule'].date_from, validated_data['schedule'].date_to),
+            schedule_day=validated_data['schedule'].get_day_type_display(),
+            state=validated_data['state'],
+            xpl=filters.format_xpl(validated_data['xpl'] if validated_data.get('xpl') is not None else 'none'),
+            zipcode=validated_data['zipcode'],
+            schedule=validated_data['schedule']
+        )
 
         return validated_data

@@ -1,16 +1,6 @@
 from database import models
 
 
-class Contact(models.Contact):
-    class Meta:
-        default_permissions = ()
-
-        proxy = True
-
-        verbose_name = 'Contact'
-        verbose_name_plural = 'Contacts'
-
-
 class Coupon(models.Coupon):
     class Meta:
         default_permissions = ()
@@ -29,6 +19,16 @@ class Price(models.Price):
 
         verbose_name = 'Client Price'
         verbose_name_plural = 'Client Prices'
+
+
+class Register(models.Register):
+    class Meta:
+        default_permissions = ()
+
+        proxy = True
+
+        verbose_name = 'Client Register'
+        verbose_name_plural = 'Client Registrations'
 
 
 class Schedule(models.Schedule):

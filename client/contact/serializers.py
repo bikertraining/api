@@ -2,21 +2,8 @@ from django.core.mail import mail_managers
 from django.template import loader
 from rest_framework import serializers
 
-from client.contact import models
-
-
-class DeleteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Contact
-
-        fields = '__all__'
-
 
 class SendEmailSerializer(serializers.Serializer):
-    can_email = serializers.BooleanField(
-        required=False
-    )
-
     email = serializers.CharField(
         required=True
     )
@@ -54,12 +41,5 @@ class SendEmailSerializer(serializers.Serializer):
             fail_silently=False,
             html_message=html_message
         )
-
-        # Subscribe to newsletter
-        if validated_data['can_email'] and not models.Contact.objects.filter(email=validated_data['email']).exists():
-            models.Contact.objects.create(
-                email=validated_data['email'],
-                name=validated_data['name']
-            )
 
         return validated_data
